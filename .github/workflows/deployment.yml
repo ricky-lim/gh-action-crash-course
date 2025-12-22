@@ -1,7 +1,5 @@
 name: Deploy App
-on:
-  - push
-  - workflow_dispatch
+on: [push, workflow_dispatch]
 jobs:
   test:
     runs-on: ubuntu-24.04
