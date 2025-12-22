@@ -3,6 +3,9 @@ on: push
 jobs:
   test:
     runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: ./app
     steps:
       - name: Download the code
         uses: actions/checkout@v6.0.1
