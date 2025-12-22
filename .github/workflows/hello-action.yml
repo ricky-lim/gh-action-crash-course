@@ -5,6 +5,8 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Print Hello
-        run: echo "Hello World!"
+        run: |
+          echo "Hello World!"
+          echo "From Github!"
       - name: Print Goodbye
         run: echo "Doei doei!"
