@@ -29,6 +29,8 @@ jobs:
 
   build:
     needs: test
+    outputs:
+      app-name: ${{ steps.app-name.outputs.app-name }}
     runs-on: ubuntu-24.04
     defaults:
       run:
@@ -42,6 +44,11 @@ jobs:
 
       - name: Build the app
         run: npm run build
+
+      - name: Output the app entry name
+        id: app-name
+        run: |
+          find dist/_app/immutable/entry/app*.js -type f -execdir echo 'app-name={}' >> $GITHUB_OUTPUT ';'
 
       - name: Upload the artifact
         uses: actions/upload-artifact@v6
@@ -60,6 +67,9 @@ jobs:
 
       - name: Show artifact output
         run: ls
+
+      - name: Show the app name
+        run: echo ${{ needs.build.outputs.app-file }}
 
       - name: Deploy
         run: echo "Deploying the application..."
