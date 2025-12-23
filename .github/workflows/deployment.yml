@@ -69,7 +69,7 @@ jobs:
         run: ls
 
       - name: Show the app name
-        run: echo ${{ needs.build.outputs.app-file }}
+        run: echo ${{ needs.build.outputs.app-name }}
 
       - name: Deploy
         run: echo "Deploying the application..."
