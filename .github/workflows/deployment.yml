@@ -44,7 +44,7 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: test-report
-          path: test.json
+          path: ./app/test.json
 
   build:
     needs: test
