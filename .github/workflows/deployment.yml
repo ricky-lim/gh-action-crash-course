@@ -109,4 +109,4 @@ jobs:
       - name: Output information
         run: |
           echo "Runs only if the job is failing "
-          echo "${{ github }}"
+          echo "${{ toJson(github) }}"
