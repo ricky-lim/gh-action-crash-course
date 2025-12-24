@@ -40,6 +40,12 @@ jobs:
       - name: Run tests
         run: npm test
 
+      - name: Upload test report
+        uses: actions/upload-artifact@v6
+        with:
+          name: test-report
+          path: test.json
+
   build:
     needs: test
     outputs:
