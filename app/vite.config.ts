@@ -7,6 +7,7 @@ export default defineConfig({
 
 	test: {
 		expect: { requireAssertions: true },
+		reporters: ['default', ['json', { outputFile: 'test.json' }]],
 
 		projects: [
 			{
