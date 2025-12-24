@@ -103,6 +103,7 @@ jobs:
 
   report:
     if: failure()
+    needs: [test, build, deploy]
     runs-on: ubuntu-24.04
     steps:
       - name: Output information
