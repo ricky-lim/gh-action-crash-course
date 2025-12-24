@@ -8,6 +8,10 @@ on:
         required: false
         default: dist
         type: string
+    secrets:
+      DEPLOYMENT_TOKEN:
+        description: "Token for deployment authentication"
+        required: true
 
 jobs:
   deploy:
