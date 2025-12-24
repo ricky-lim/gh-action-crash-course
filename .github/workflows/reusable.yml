@@ -1,0 +1,11 @@
+name: Reusable Deployment Workflow
+
+on:
+  workflow_call:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Deploy the application
+        run: echo "Deploying the application..."
