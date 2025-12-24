@@ -12,9 +12,15 @@ on:
       DEPLOYMENT_TOKEN:
         description: "Token for deployment authentication"
         required: true
+    outputs:
+      deployment-status:
+        description: "The status of the deployment"
+        value: ${{ jobs.deploy.outputs.deployment-status }}
 
 jobs:
   deploy:
+    outputs:
+      deployment-status: ${{ steps.deploy-step.outputs.status }}
     runs-on: ubuntu-24.04
     steps:
       - name: Download artifact
@@ -29,3 +35,7 @@ jobs:
       - name: Deploy the application
         run: |
           echo "Deploying the application from artifact: ${{ inputs.artifact-name }}"
+
+      - name: Set deployment status
+        id: deploy-step
+        run: echo "status=success" >> $GITHUB_OUTPUT

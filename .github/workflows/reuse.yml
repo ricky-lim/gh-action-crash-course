@@ -88,6 +88,14 @@ jobs:
     secrets:
       DEPLOYMENT_TOKEN: ${{ secrets.DEPLOYMENT_TOKEN }}
 
+  print-deployment-status:
+    needs: deploy
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Print deployment status
+        run: |
+          echo "Deployment Status: ${{ needs.deploy.outputs.deployment-status }}"
+
   report:
     if: failure()
     needs: [test, build, deploy]
