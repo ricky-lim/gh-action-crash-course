@@ -2,10 +2,26 @@ name: Reusable Deployment Workflow
 
 on:
   workflow_call:
+    inputs:
+      artifact-name:
+        description: 'The name of the artifact to deploy'
+        required: false
+        default: dist
+        type: string
+      
 
 jobs:
   deploy:
     runs-on: ubuntu-24.04
     steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v6
+        with:
+          name: ${{ inputs.artifact-name }}
+
+      - name: List files in artifact
+        run: ls -la ${{ inputs.artifact-name }}
+
       - name: Deploy the application
-        run: echo "Deploying the application..."
+        run: |
+          echo "Deploying the application from artifact: ${{ inputs.artifact-name }}"
