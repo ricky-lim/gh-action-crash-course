@@ -38,9 +38,11 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run tests
+        id: run-tests
         run: npm test
 
       - name: Upload test report
+        if: steps.run-tests.outcome == 'failure'
         uses: actions/upload-artifact@v6
         with:
           name: test-report
