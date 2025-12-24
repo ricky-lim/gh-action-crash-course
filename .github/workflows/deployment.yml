@@ -100,3 +100,12 @@ jobs:
 
       - name: Deploy
         run: echo "Deploying the application..."
+
+  report:
+    if: failure()
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Output information
+        run: |
+          echo "Runs only if the job is failing "
+          echo "${{ github }}"
