@@ -8,6 +8,8 @@ jobs:
     defaults:
       run:
         working-directory: ./app
+    container:
+      image: mcr.microsoft.com/playwright:v1.57.0-noble
     steps:
       - name: Download the code
         uses: actions/checkout@v6
