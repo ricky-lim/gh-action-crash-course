@@ -1,0 +1,23 @@
+name: 'Get and Cache Dependencies'
+description: 'Action to get and cache project dependencies'
+runs:
+  using: 'composite'
+  steps:
+      - name: Install NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - &cache-dependencies
+        name: Cache dependencies
+        id: cache-dependencies
+        uses: actions/cache@v5
+        with:
+          path: ./app/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+      - &install-dependencies
+        name: Install dependencies
+        if: steps.cache-dependencies.outputs.cache-hit != 'true'
+        run: npm ci
+        shell: bash
