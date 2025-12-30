@@ -8,16 +8,14 @@ runs:
         with:
           node-version: "20"
 
-      - &cache-dependencies
-        name: Cache dependencies
+      - name: Cache dependencies
         id: cache-dependencies
         uses: actions/cache@v5
         with:
           path: ./app/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
-      - &install-dependencies
-        name: Install dependencies
+      - name: Install dependencies
         if: steps.cache-dependencies.outputs.cache-hit != 'true'
         run: cd app && npm ci
         shell: bash
