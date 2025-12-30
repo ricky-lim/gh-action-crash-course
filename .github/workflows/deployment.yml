@@ -15,9 +15,14 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Download and install dependencies
+        id: cache-deps
         uses: ./.github/actions/cache-deps
         with:
           node-version: "20"
+      
+      - name: Output Cache Status
+        run: |
+          echo "Cache used? ${{ steps.cache-deps.outputs.used-cache }}"
 
       - name: Run tests
         id: run-tests
@@ -43,10 +48,15 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Download and install dependencies
+        id: cache-deps
         uses: ./.github/actions/cache-deps
         with:
           node-version: "20"
           caching: "false"
+
+      - name: Output Cache Status
+        run: |
+          echo "Cache used? ${{ steps.cache-deps.outputs.used-cache }}"
 
       - name: Build the app
         run: npm run build
