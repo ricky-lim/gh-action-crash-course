@@ -52,9 +52,8 @@ jobs:
       - name: Download the code
         uses: actions/checkout@v6
 
-      - *cache-dependencies
-
-      - *install-dependencies
+      - name: Download and install dependencies
+        uses: ./.github/actions/cache-deps
 
       - name: Build the app
         run: npm run build
