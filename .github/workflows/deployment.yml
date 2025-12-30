@@ -101,6 +101,20 @@ jobs:
         run: |
           echo "App deployed at: ${{ steps.deploy.outputs.deployed-url }}"
 
+      - name: Deploy with Docker Action
+        id: deploy-docker
+        uses: ./.github/actions/deploy-s3-docker
+        with:
+          bucket: my-app-bucket-docker
+          region: us-west-1
+          dist-folder: dist
+
+      - name: Output deployed URL
+        run: |
+          echo "App deployed at: ${{ steps.deploy-docker.outputs.deployed-url }}"
+
+      
+
   report:
     if: failure()
     needs: [test, build, deploy]
