@@ -104,4 +104,4 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - name: Output information
-        uses: ./github/actions/deploy-s3
+        uses: ./.github/actions/deploy-s3
