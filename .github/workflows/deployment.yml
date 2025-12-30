@@ -88,7 +88,11 @@ jobs:
         run: echo ${{ needs.build.outputs.app-name }}
 
       - name: Deploy
-        run: echo "Deploying the application..."
+        uses: ./.github/actions/deploy-s3
+        with:
+          bucket: my-app-bucket
+          region: us-west-2
+          dist-folder: dist
 
   report:
     if: failure()
@@ -99,12 +103,3 @@ jobs:
         run: |
           echo "Runs only if the job is failing "
           echo "${{ toJson(github) }}"
-
-  information:
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Download the code
-        uses: actions/checkout@v6
-        
-      - name: Output information
-        uses: ./.github/actions/deploy-s3

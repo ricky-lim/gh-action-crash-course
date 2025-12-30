@@ -1,5 +1,17 @@
 name: 'Deploy to S3'
 description: 'Deploy built application to AWS S3'
+inputs:
+  bucket:
+    description: 'The S3 bucket name to deploy to'
+    required: true
+  region:
+    description: 'The AWS region of the S3 bucket'
+    default: 'us-east-1'
+    required: false
+  dist-folder:
+    description: 'The folder containing the built application to deploy'
+    default: 'dist'
+    required: false
 runs:
   using: 'node20'
   main: 'main.js'
