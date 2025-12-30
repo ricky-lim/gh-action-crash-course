@@ -90,11 +90,16 @@ jobs:
         run: echo ${{ needs.build.outputs.app-name }}
 
       - name: Deploy
+        id: deploy
         uses: ./.github/actions/deploy-s3
         with:
           bucket: my-app-bucket
           region: us-west-2
           dist-folder: dist
+
+      - name: Output deployed URL
+        run: |
+          echo "App deployed at: ${{ steps.deploy.outputs.deployed-url }}"
 
   report:
     if: failure()
