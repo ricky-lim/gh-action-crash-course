@@ -35,5 +35,5 @@ runs:
         if: ${{ steps.cache-dependencies.outputs.cache-hit != 'true' || inputs.caching != 'true' }}
         run: |
           cd app && npm ci
-          echo "cache=${{ inputs.caching }}" >> $GITHUB_OUTPUT
+          echo "cache='${{ inputs.caching }}'" >> $GITHUB_OUTPUT
         shell: bash
