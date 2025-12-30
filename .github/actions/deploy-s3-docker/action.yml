@@ -16,7 +16,3 @@ outputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  args:
-    - ${{ inputs.bucket }}
-    - ${{ inputs.region }}
-    - ${{ inputs.dist-folder }}
