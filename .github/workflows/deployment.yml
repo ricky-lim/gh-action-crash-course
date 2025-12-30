@@ -19,7 +19,7 @@ jobs:
         uses: ./.github/actions/cache-deps
         with:
           node-version: "20"
-      
+
       - name: Output Cache Status
         run: |
           echo "Cache used? ${{ steps.cache-deps.outputs.used-cache }}"
@@ -99,3 +99,9 @@ jobs:
         run: |
           echo "Runs only if the job is failing "
           echo "${{ toJson(github) }}"
+
+  information:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Output information
+        uses: ./github/actions/deploy-s3
