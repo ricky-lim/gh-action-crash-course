@@ -11,21 +11,13 @@ jobs:
     container:
       image: mcr.microsoft.com/playwright:v1.57.0-noble
     steps:
-      - name: Setup Docker layer caching
-        uses: actions/cache@v4
-        with:
-          path: /var/lib/docker
-          key: docker-${{ runner.os }}-${{ hashFiles('**/Dockerfile') }}
-          restore-keys: |
-            docker-${{ runner.os }}-
-
       - name: Download the code
         uses: actions/checkout@v6
 
       - name: Download and install dependencies
         uses: ./.github/actions/cache-deps
         with:
-          node-version: '20'
+          node-version: "20"
 
       - name: Run tests
         id: run-tests
@@ -53,8 +45,8 @@ jobs:
       - name: Download and install dependencies
         uses: ./.github/actions/cache-deps
         with:
-          node-version: '20'
-          caching: 'false'
+          node-version: "20"
+          caching: "false"
 
       - name: Build the app
         run: npm run build
