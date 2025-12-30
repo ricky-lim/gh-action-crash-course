@@ -76,6 +76,8 @@ jobs:
     needs: build
     runs-on: ubuntu-24.04
     steps:
+      - uses: actions/checkout@v6
+
       - name: Download dist artifact
         uses: actions/download-artifact@v6
         with:
