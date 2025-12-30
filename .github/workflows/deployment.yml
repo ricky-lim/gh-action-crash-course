@@ -103,5 +103,8 @@ jobs:
   information:
     runs-on: ubuntu-24.04
     steps:
+      - name: Download the code
+        uses: actions/checkout@v6
+        
       - name: Output information
         uses: ./.github/actions/deploy-s3
