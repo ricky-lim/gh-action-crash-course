@@ -7,10 +7,19 @@ jobs:
   assign-label:
     runs-on: ubuntu-24.04
     steps:
-      - name: "Assign label"
+      - name: "Assign label can be injected"
         run: |
           issue_title="${{ github.event.issue.title }}"
           if [[ "$issue_title" == *"bug"* ]]; then
+              echo "Issue is about a bug"
+          else
+              echo "Issue is not about a bug"
+          fi
+      - name: "Assign label with env"
+        env:
+          TITLE: ${{ github.event.issue.title }}
+        run: |
+          if [[ "$TITLE" == *"bug"* ]]; then
               echo "Issue is about a bug"
           else
               echo "Issue is not about a bug"
