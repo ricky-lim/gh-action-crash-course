@@ -1,0 +1,41 @@
+name: Reusable Deployment Workflow
+
+on:
+  workflow_call:
+    inputs:
+      artifact-name:
+        description: "The name of the artifact to deploy"
+        required: false
+        default: dist
+        type: string
+    secrets:
+      DEPLOYMENT_TOKEN:
+        description: "Token for deployment authentication"
+        required: true
+    outputs:
+      deployment-status:
+        description: "The status of the deployment"
+        value: ${{ jobs.deploy.outputs.deployment-status }}
+
+jobs:
+  deploy:
+    outputs:
+      deployment-status: ${{ steps.deploy-step.outputs.status }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v6
+        with:
+          name: ${{ inputs.artifact-name }}
+          path: ${{ inputs.artifact-name }}
+
+      - name: List files in artifact
+        run: ls -la ${{ inputs.artifact-name }}
+
+      - name: Deploy the application
+        run: |
+          echo "Deploying the application from artifact: ${{ inputs.artifact-name }}"
+
+      - name: Set deployment status
+        id: deploy-step
+        run: echo "status=success" >> $GITHUB_OUTPUT

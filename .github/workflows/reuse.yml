@@ -1,0 +1,107 @@
+name: Reuse Deployment Workflow
+on:
+  - workflow_dispatch
+  - push
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: ./app
+    steps:
+      - name: Download the code
+        uses: actions/checkout@v6
+
+      - name: Install NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - &cache-dependencies
+        name: Cache dependencies
+        id: cache-dependencies
+        uses: actions/cache@v5
+        with:
+          path: ./app/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+      - &install-dependencies
+        name: Install dependencies
+        if: steps.cache-dependencies.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v5
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install Playwright browsers
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps
+
+      - name: Run tests
+        id: run-tests
+        run: npm test
+
+      - name: Upload test report
+        if: failure() && steps.run-tests.outcome == 'failure'
+        uses: actions/upload-artifact@v6
+        with:
+          name: test-report
+          path: ./app/test.json
+
+  build:
+    needs: test
+    outputs:
+      app-name: ${{ steps.app-name.outputs.app-name }}
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: ./app
+    steps:
+      - name: Download the code
+        uses: actions/checkout@v6
+
+      - *cache-dependencies
+
+      - *install-dependencies
+
+      - name: Build the app
+        run: npm run build
+
+      - name: Output the app entry name
+        id: app-name
+        run: |
+          find dist/_app/immutable/entry/app*.js -type f -execdir echo 'app-name={}' >> $GITHUB_OUTPUT ';'
+
+      - name: Upload the artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: dist
+          path: ./app/dist
+
+  deploy:
+    needs: build
+    uses: ./.github/workflows/reusable.yml
+    secrets:
+      DEPLOYMENT_TOKEN: ${{ secrets.DEPLOYMENT_TOKEN }}
+
+  print-deployment-status:
+    needs: deploy
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Print deployment status
+        run: |
+          echo "Deployment Status: ${{ needs.deploy.outputs.deployment-status }}"
+
+  report:
+    if: failure()
+    needs: [test, build, deploy]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Output information
+        run: |
+          echo "Runs only if the job is failing "
+          echo "${{ toJson(github) }}"
